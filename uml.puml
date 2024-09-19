@@ -1,0 +1,34 @@
+@startuml
+
+' Definiere die Pakete
+class Main {
+    +main(String[] args)
+}
+
+class WortTrainer {
+}
+
+class WordBildPaar {
+
+}
+
+class Statisik {
+
+}
+
+
+
+
+
+
+
+
+' Beziehungen
+Main --> WortTrainer
+Main --> BildBearbeitung
+
+WortTrainer --> "0..*" WordBildPaar
+WortTrainer --> Statisik
+
+
+@enduml
