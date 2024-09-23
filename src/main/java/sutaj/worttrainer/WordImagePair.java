@@ -27,4 +27,29 @@ public class WordImagePair {
             return false;
         }
     }
+    public String getWord() {
+        return word;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    // Optional: Override equals and hashCode if needed
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        WordImagePair that = (WordImagePair) o;
+
+        if (!word.equals(that.word)) return false;
+        return imageUrl.equals(that.imageUrl);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(word, imageUrl);
+    }
 }

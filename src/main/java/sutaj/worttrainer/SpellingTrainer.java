@@ -7,13 +7,13 @@ import java.util.Random;
 import java.util.Set;
 
 public class SpellingTrainer {
-    private List availablePairs; // Liste an image pairs
-    private Set selectedPairs; // Ein set an image pairs
-    private WordImagePair currentPair; // Zu implementieren
-    private Statistics statistics; // zu implementieren
+    private List<WordImagePair> availablePairs;
+    private Set<WordImagePair> selectedPairs;
+    private WordImagePair currentPair;
+    private Statistics statistics;
     private Random random;
 
-    public SpellingTrainer(List pairs) {
+    public SpellingTrainer(List<WordImagePair> pairs) {
         if (pairs == null) {
             throw new IllegalArgumentException("Paarliste darf nicht null sein.");
         }
