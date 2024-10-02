@@ -1,34 +1,70 @@
 @startuml
 
-' Definiere die Pakete
-class Main {
-    +main(String[] args)
+package "sutaj.worttrainer" {
+    class Main {
+        +main(String[] args)
+    }
+
+    class WortTrainer {
+        - List<WordBildPaar> availablePairs
+        - Set<WordBildPaar> selectedPairs
+        - WordBildPaar currentPair
+        - Statistik statistics
+        - Random random
+        + WortTrainer(List<WordBildPaar> pairs)
+        + void selectPairByIndex(int index)
+        + void selectRandomPair()
+        + WordBildPaar getCurrentPair()
+        + Statistik getStatistics()
+        + void submitAnswer(String answer)
+        + List<WordBildPaar> getAvailablePairs()
+        + void setAvailablePairs(List<WordBildPaar> pairs)
+    }
+
+    class WordBildPaar {
+        - String word
+        - String imageUrl
+        + WordBildPaar(String word, String imageUrl)
+        + String getWord()
+        + String getImageUrl()
+        + boolean equals(Object o)
+        + int hashCode()
+    }
+
+    class Statistik {
+        - int total
+        - int correct
+        - int incorrect
+        + Statistik()
+        + void incrementTotal()
+        + void incrementCorrect()
+        + void incrementIncorrect()
+        + int getTotal()
+        + int getCorrect()
+        + int getIncorrect()
+        + void setTotal(int total)
+        + void setCorrect(int correct)
+        + void setIncorrect(int incorrect)
+    }
+
+    class PersistenceManager {
+        - String filePath
+        + PersistenceManager(String filePath)
+        + void save(WortTrainer trainer) throws IOException
+        + WortTrainer load() throws IOException
+    }
+
+    class ImageUtils {
+        + static ImageIcon getScaledImageIcon(String urlString, int maxWidth, int maxHeight)
+        + static ImageIcon getScaledImageIcon(ImageIcon icon, int maxWidth, int maxHeight)
+    }
+
+    ' Beziehungen
+    Main --> WortTrainer
+    Main --> ImageUtils
+    WortTrainer --> "0..*" WordBildPaar
+    WortTrainer --> Statistik
+    WortTrainer --> PersistenceManager
 }
-
-class WortTrainer {
-}
-
-class WordBildPaar {
-
-}
-
-class Statisik {
-
-}
-
-
-
-
-
-
-
-
-' Beziehungen
-Main --> WortTrainer
-Main --> BildBearbeitung
-
-WortTrainer --> "0..*" WordBildPaar
-WortTrainer --> Statisik
-
 
 @enduml
