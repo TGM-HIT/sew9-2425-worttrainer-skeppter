@@ -135,4 +135,3 @@ Die `WordImagePair`-Klasse ist eine Datenklasse, die ein Wort und die zugehörig
 - Override von `equals` und `hashCode` für die korrekte Funktion in Datenstrukturen.
 
 ---
-

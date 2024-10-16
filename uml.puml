@@ -59,12 +59,22 @@ package "sutaj.worttrainer" {
         + static ImageIcon getScaledImageIcon(ImageIcon icon, int maxWidth, int maxHeight)
     }
 
+    class JSONSave {
+
+    }
+    class XMLSave {
+
+    }
+
     ' Beziehungen
     Main --> WortTrainer
     Main --> ImageUtils
     WortTrainer --> "0..*" WordBildPaar
     WortTrainer --> Statistik
-    WortTrainer --> PersistenceManager
+    Main --> PersistenceManager
+    PersistenceManager --> JSONSave
+     PersistenceManager --> XMLSave
+
 }
 
 @enduml
