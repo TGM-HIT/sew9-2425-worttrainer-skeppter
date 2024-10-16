@@ -39,3 +39,39 @@ Die `Main`-Klasse ist der Einstiegspunkt der Anwendung und steuert den Hauptprog
 
 ---
 
+### ImageUtils
+
+Die `ImageUtils`-Klasse bietet Hilfsmethoden zum Laden, Skalieren und Cachen von Bildern. Sie stellt sicher, dass Bilder effizient geladen und an die benötigten Größen angepasst werden.
+
+**Hauptfunktionen:**
+
+- **Bildskalierung:**
+    - Skaliert Bilder auf eine maximale Breite und Höhe unter Beibehaltung des Seitenverhältnisses.
+- **Caching:**
+    - Verwendet ein Cache, um bereits geladene und skalierte Bilder wiederzuverwenden, was die Leistung verbessert.
+
+**Wichtige Methoden:**
+
+- `public static ImageIcon getScaledImageIcon(String urlString, int maxWidth, int maxHeight)`: Lädt ein Bild von einer URL, skaliert es und gibt es als `ImageIcon` zurück.
+- `public static ImageIcon getScaledImageIcon(ImageIcon icon, int maxWidth, int maxHeight)`: Skaliert ein vorhandenes `ImageIcon` auf die angegebenen Abmessungen.
+
+---
+
+### PersistenceManager
+
+Der `PersistenceManager` ist für das Speichern und Laden des Anwendungszustands verantwortlich. Er ermöglicht es, den Fortschritt des Benutzers zwischen den Sitzungen zu bewahren.
+
+**Hauptfunktionen:**
+
+- **Speichern:**
+    - Serialisiert den Zustand des `SpellingTrainer` (verfügbare Paare, Statistik, aktuelles Paar) in eine JSON-Datei.
+- **Laden:**
+    - Deserialisiert die JSON-Datei und rekonstruiert den Zustand des `SpellingTrainer`.
+
+**Wichtige Methoden:**
+
+- `public void save(SpellingTrainer trainer)`: Speichert den aktuellen Zustand des Trainers in die Datei.
+- `public SpellingTrainer load()`: Lädt den Trainerzustand aus der Datei.
+
+---
+
