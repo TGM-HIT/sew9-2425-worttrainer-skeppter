@@ -1,5 +1,10 @@
 package sutaj.worttrainer;
 
+
+/**
+ * @author Drinor Sutaj
+ * @version 14.10.2024
+ */
 public class Statistics {
     private int total;
     private int correct;

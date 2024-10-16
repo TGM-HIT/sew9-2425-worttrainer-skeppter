@@ -5,6 +5,11 @@ package sutaj.worttrainer;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+
+/**
+ * @author Drinor Sutaj
+ * @version 14.10.2024
+ */
 class WordImagePairTest {
 
     /**

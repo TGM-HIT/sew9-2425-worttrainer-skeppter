@@ -7,6 +7,10 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Drinor Sutaj
+ * @version 14.10.2024
+ */
 public class PersistenceManager {
     private String filePath;
 

@@ -6,6 +6,10 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Drinor Sutaj
+ * @version 14.10.2024
+ */
 public class ImageUtils {
     private static final Map<String, ImageIcon> imageCache = new HashMap<>();
 

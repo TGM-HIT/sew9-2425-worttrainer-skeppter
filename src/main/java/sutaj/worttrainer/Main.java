@@ -7,6 +7,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Drinor Sutaj
+ * @version 14.10.2024
+ */
 public class Main {
     private static final String DATA_FILE = "src/main/resources/wordtrainer.json";
     private static final int MAX_IMAGE_WIDTH = 600;

@@ -7,6 +7,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * @author Drinor Sutaj
+ * @version 14.10.2024
+ */
 class SpellingTrainerTest {
 
     private SpellingTrainer trainer;

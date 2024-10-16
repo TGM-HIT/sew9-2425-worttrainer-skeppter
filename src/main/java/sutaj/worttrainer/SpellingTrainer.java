@@ -6,6 +6,11 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+
+/**
+ * @author Drinor Sutaj
+ * @version 14.10.2024
+ */
 public class SpellingTrainer {
     private List<WordImagePair> availablePairs;
     private Set<WordImagePair> selectedPairs;

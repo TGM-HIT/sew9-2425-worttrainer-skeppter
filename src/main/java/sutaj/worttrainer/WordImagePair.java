@@ -4,6 +4,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Objects;
 
+
+/**
+ * @author Drinor Sutaj
+ * @version 14.10.2024
+ */
 public class WordImagePair {
     private String word;
     private String imageUrl;
