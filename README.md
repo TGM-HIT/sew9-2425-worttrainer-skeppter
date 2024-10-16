@@ -75,3 +75,64 @@ Der `PersistenceManager` ist für das Speichern und Laden des Anwendungszustands
 
 ---
 
+### SpellingTrainer
+
+Der `SpellingTrainer` verwaltet die Logik des Rechtschreibtrainers. Er hält die Liste der zu lernenden Wort-Bild-Paare und verarbeitet die Benutzereingaben.
+
+**Hauptfunktionen:**
+
+- **Verwaltung der Wort-Bild-Paare:**
+    - Hält eine Liste der verfügbaren Paare, aus denen zufällig ausgewählt wird.
+- **Benutzereingaben:**
+    - Überprüft die vom Benutzer eingegebenen Wörter auf Korrektheit.
+    - Aktualisiert die Statistik basierend auf den Eingaben.
+- **Statistiken:**
+    - Hält die Anzahl der Versuche, korrekten und inkorrekten Antworten fest.
+
+**Wichtige Methoden:**
+
+- `public void selectRandomPair()`: Wählt zufällig ein Wort-Bild-Paar aus der verfügbaren Liste aus.
+- `public void submitAnswer(String answer)`: Verarbeitet die Benutzereingabe und aktualisiert die Statistik.
+- `public WordImagePair getCurrentPair()`: Gibt das aktuell ausgewählte Wort-Bild-Paar zurück.
+- `public Statistics getStatistics()`: Gibt die aktuelle Statistik zurück.
+
+---
+
+### Statistics
+
+Die `Statistics`-Klasse hält die Leistungsdaten des Benutzers während des Trainings fest.
+
+**Hauptfunktionen:**
+
+- **Zähler:**
+    - Hält die Gesamtzahl der Versuche, sowie die Anzahl der korrekten und inkorrekten Antworten.
+
+**Wichtige Methoden:**
+
+- `public void incrementTotal()`: Erhöht die Gesamtzahl der Versuche um eins.
+- `public void incrementCorrect()`: Erhöht die Anzahl der korrekten Antworten um eins.
+- `public void incrementIncorrect()`: Erhöht die Anzahl der inkorrekten Antworten um eins.
+- Getter und Setter für die Attribute `total`, `correct` und `incorrect`.
+
+---
+
+### WordImagePair
+
+Die `WordImagePair`-Klasse ist eine Datenklasse, die ein Wort und die zugehörige Bild-URL repräsentiert.
+
+**Hauptfunktionen:**
+
+- **Validierung:**
+    - Stellt sicher, dass sowohl das Wort als auch die Bild-URL gültig sind.
+- **Datenhaltung:**
+    - Speichert das Wort und die Bild-URL für den Zugriff durch andere Klassen.
+
+**Wichtige Methoden:**
+
+- `public WordImagePair(String word, String imageUrl)`: Konstruktor, der das Wort und die Bild-URL initialisiert.
+- `public String getWord()`: Gibt das Wort zurück.
+- `public String getImageUrl()`: Gibt die Bild-URL zurück.
+- Override von `equals` und `hashCode` für die korrekte Funktion in Datenstrukturen.
+
+---
+
