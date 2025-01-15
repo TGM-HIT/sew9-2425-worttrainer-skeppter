@@ -24,7 +24,10 @@ jobs:
           java-version: '23'
           distribution: 'temurin'
 
-      # Step 3: Build and run tests using Gradle
+      # Step 3: Grant execute permissions to the Gradle wrapper
+      - name: Grant execute permissions for Gradle wrapper
+        run: chmod +x ./gradlew
+
+      # Step 4: Build and test with Gradle
       - name: Build and test with Gradle
-        run: |
-          ./gradlew clean test
+        run: ./gradlew clean test
