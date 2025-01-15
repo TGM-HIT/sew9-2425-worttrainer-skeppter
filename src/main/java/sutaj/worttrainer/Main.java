@@ -6,6 +6,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * Hauptklasse des Rechtschreibtrainers. Stellt die Benutzeroberfläche bereit und
@@ -53,8 +55,27 @@ public class Main {
 
             if (currentPair == null) {
                 JOptionPane.showMessageDialog(null, "Alle Wörter wurden richtig geraten! Gut gemacht!", "Erfolg", JOptionPane.INFORMATION_MESSAGE);
+
+                // Datei mit Standard-Wort-Bild-Paaren und zurückgesetzter Statistik überschreiben
+                try {
+                    SpellingTrainer resetTrainer = createDefaultTrainer(); // Standarddaten erstellen
+                    Statistics resetStatistics = resetTrainer.getStatistics(); // Statistik abrufen und zurücksetzen
+                    resetStatistics.setTotal(0);
+                    resetStatistics.setCorrect(0);
+                    resetStatistics.setIncorrect(0);
+                    persistenceManager.save(resetTrainer); // Trainer mit zurückgesetzten Daten speichern
+
+                    JOptionPane.showMessageDialog(null, "Die Daten wurden zurückgesetzt. Beim nächsten Start beginnt das Training von vorne.", "Zurücksetzen", JOptionPane.INFORMATION_MESSAGE);
+                } catch (IOException e) {
+                    JOptionPane.showMessageDialog(null, "Fehler beim Zurücksetzen der Daten: " + e.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
+                }
+                System.exit(0);
                 break;
             }
+
+
+
+
 
             // Statistik- und Ergebnismeldung zusammenstellen
             String statsMessage = "<html><body>" +
