@@ -8,24 +8,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Hauptklasse des Rechtschreibtrainers. Stellt die Benutzeroberfläche bereit und
+ * verwaltet die Hauptlogik des Programms, einschließlich der Lade- und Speicheroperationen
+ * sowie des Trainingsprozesses.
+ *
  * @author Drinor Sutaj
  * @version 14.10.2024
  */
 public class Main {
-    private static final String DATA_FILE = "src/main/resources/wordtrainer.json";
-    private static final int MAX_IMAGE_WIDTH = 600;
-    private static final int MAX_IMAGE_HEIGHT = 300;
+    private static final String DATA_FILE = "src/main/resources/wordtrainer.json"; // Dateipfad für gespeicherte Daten
+    private static final int MAX_IMAGE_WIDTH = 600; // Maximale Breite für Bilder
+    private static final int MAX_IMAGE_HEIGHT = 300; // Maximale Höhe für Bilder
 
+    /**
+     * Einstiegspunkt des Programms. Verwaltet das Laden von Daten, den Trainingsprozess
+     * und das Speichern des Fortschritts.
+     *
+     * @param args Argumente der Kommandozeile (nicht verwendet)
+     */
     public static void main(String[] args) {
-        // Initialize PersistenceManager
         PersistenceManager persistenceManager = new PersistenceManager(DATA_FILE);
-        SpellingTrainer trainer = null;
+        SpellingTrainer trainer;
 
-        // Load persisted data
+        // Lade gespeicherte Daten oder erstelle einen neuen Trainer, falls keine Daten vorhanden sind
         try {
             trainer = persistenceManager.load();
             if (trainer == null) {
-                // Keine persistierten Daten gefunden, erstelle neuen Trainer
                 trainer = createDefaultTrainer();
             }
         } catch (IOException e) {
@@ -33,13 +41,13 @@ public class Main {
             trainer = createDefaultTrainer();
         }
 
-        // Hauptschleife
+        // Haupt-Trainingsschleife
         boolean continueTraining = true;
         WordImagePair previousPair = null;
-        boolean previousResult = false; // true für richtig, false für falsch
+        boolean previousResult = false; // true = letzte Antwort korrekt, false = falsch
 
         while (continueTraining) {
-            // Wähle zufälliges Paar
+            // Zufälliges Wort-Bild-Paar auswählen
             trainer.selectRandomPair();
             WordImagePair currentPair = trainer.getCurrentPair();
 
@@ -48,46 +56,40 @@ public class Main {
                 break;
             }
 
-            // Erstelle die Statistik-Nachricht
+            // Statistik- und Ergebnismeldung zusammenstellen
             String statsMessage = "<html><body>" +
                     "<h3>Statistik:</h3>" +
                     "<p>Gesamtversuche: " + trainer.getStatistics().getTotal() + "<br>" +
                     "Richtig: " + trainer.getStatistics().getCorrect() + "<br>" +
                     "Falsch: " + trainer.getStatistics().getIncorrect() + "</p>";
 
-            // Optional: Zeige vorheriges Ergebnis
             if (previousPair != null) {
-                String resultMessage = previousResult ? "Richtig!" : "Falsch!";
-                statsMessage += "<p>Letzter Versuch mit <strong>" + previousPair.getWord() + "</strong>: " + resultMessage + "</p>";
+                statsMessage += "<p>Letzter Versuch mit <strong>" + previousPair.getWord() + "</strong>: " +
+                        (previousResult ? "Richtig!" : "Falsch!") + "</p>";
             }
 
-            // Lade das Bild von der URL
-            ImageIcon imageIcon = null;
+            // Bild laden und skalieren
+            ImageIcon imageIcon;
             try {
                 URL url = new URL(currentPair.getImageUrl());
                 imageIcon = new ImageIcon(url);
-                // Skaliere das Bild auf die maximalen Abmessungen
                 imageIcon = ImageUtils.getScaledImageIcon(imageIcon, MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT);
             } catch (MalformedURLException e) {
                 JOptionPane.showMessageDialog(null, "Ungültige Bild-URL: " + currentPair.getImageUrl(), "Fehler", JOptionPane.ERROR_MESSAGE);
-                // Setze imageIcon auf ein leeres Icon oder eine Standardgrafik
-                imageIcon = new ImageIcon();
+                imageIcon = new ImageIcon(); // Fallback
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Fehler beim Laden des Bildes: " + e.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
-                imageIcon = new ImageIcon();
+                imageIcon = new ImageIcon(); // Fallback
             }
 
-            // Erstelle ein JLabel mit dem Bild
-            JLabel imageLabel = new JLabel(imageIcon);
-
-            // Erstelle ein JPanel, das Statistik und Bild enthält
+            // Panel mit Bild und Statistik erstellen
             JPanel panel = new JPanel();
             panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
             panel.add(new JLabel("<html>" + statsMessage + "</html>"));
             panel.add(Box.createVerticalStrut(10)); // Abstand
-            panel.add(imageLabel);
+            panel.add(new JLabel(imageIcon));
 
-            // Eingabeaufforderung
+            // Benutzeraufforderung für Eingabe
             String userInput = (String) JOptionPane.showInputDialog(
                     null,
                     panel,
@@ -99,22 +101,19 @@ public class Main {
             );
 
             if (userInput == null || userInput.trim().isEmpty()) {
-                // Beende die Schleife
-                continueTraining = false;
+                continueTraining = false; // Beenden, falls keine Eingabe
             } else {
-                // Überprüfe die Antwort
                 trainer.submitAnswer(userInput);
                 previousPair = currentPair;
-                previousResult = trainer.getCurrentPair() == null; // true, wenn richtig
-                if (previousResult) {
-                    JOptionPane.showMessageDialog(null, "Richtig! Weiter geht's.", "Erfolg", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(null, "Falsch! Versuch es noch einmal.", "Fehler", JOptionPane.WARNING_MESSAGE);
-                }
+                previousResult = trainer.getCurrentPair() == null; // Richtig, falls null
+                JOptionPane.showMessageDialog(null,
+                        previousResult ? "Richtig! Weiter geht's." : "Falsch! Versuch es noch einmal.",
+                        previousResult ? "Erfolg" : "Fehler",
+                        previousResult ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.WARNING_MESSAGE);
             }
         }
 
-        // Speichere den aktuellen Zustand
+        // Fortschritt speichern
         try {
             persistenceManager.save(trainer);
         } catch (IOException e) {
@@ -125,14 +124,17 @@ public class Main {
         System.exit(0);
     }
 
+    /**
+     * Erstellt einen neuen Trainer mit einer Standardliste von Wort-Bild-Paaren.
+     *
+     * @return Ein SpellingTrainer mit voreingestellten Daten.
+     */
     private static SpellingTrainer createDefaultTrainer() {
         List<WordImagePair> defaultPairs = new ArrayList<>();
         defaultPairs.add(new WordImagePair("Hund", "https://i.natgeofe.com/n/4f5aaece-3300-41a4-b2a8-ed2708a0a27c/domestic-dog_thumb_square.jpg"));
         defaultPairs.add(new WordImagePair("Katze", "https://media.4-paws.org/a/5/c/4/a5c4c9cdfd3a8ecb58e9b1a5bd496c9dfbc3cedc/VIER%20PFOTEN_2020-10-07_00132-2890x2000-1920x1329.jpg"));
         defaultPairs.add(new WordImagePair("Apfel", "https://www.mcdonalds.at/wp-content/uploads/2023/02/1500x1500-web-pop-neu-happy-meal-apfel.png"));
         defaultPairs.add(new WordImagePair("Baum", "https://biberberti.com/wp-content/uploads/2021/08/04-px-alter-Baum.jpg"));
-        // Füge weitere Paare nach Bedarf hinzu
-
         return new SpellingTrainer(defaultPairs);
     }
 }
